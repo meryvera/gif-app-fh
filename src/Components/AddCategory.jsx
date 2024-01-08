@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 export const AddCategory = ({ onNewCategory }) => {
 
-  const [inputValue, setInputValue] = useState('Hola Mundo')
+  const [inputValue, setInputValue] = useState('')
   
   const onInputChange = ({target}) => {
     setInputValue(target.value)
@@ -11,7 +12,10 @@ export const AddCategory = ({ onNewCategory }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (inputValue.trim().length <= 2) return;
+    
+    onNewCategory(inputValue.trim());
 
+    setInputValue('');
     // Hay 2 maneras de agregar al array el nuevo valor ingresado al input - DE PADRE A HIJO
     // 1.
     // setCategories((cat) => [...cat, inputValue]);
@@ -19,13 +23,10 @@ export const AddCategory = ({ onNewCategory }) => {
     // setCategories([...categories, inputValue]);
 
     // Hay 1 maneras de agregar al array el nuevo valor ingresado al input - DE HIJO A PADRE
-    onNewCategory(inputValue.trim());
-
-    setInputValue('');
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form aria-label='form' onSubmit={onSubmit}>
       <input
         type="text"
         placeholder='Search gifs...'
@@ -34,4 +35,8 @@ export const AddCategory = ({ onNewCategory }) => {
       />
     </form>
   )
+}
+
+AddCategory.propTypes = {
+  onNewCategory: PropTypes.func.isRequired
 }
